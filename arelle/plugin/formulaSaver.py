@@ -18,6 +18,7 @@ from arelle.ViewUtilFormulae import rootFormulaObjects, formulaObjSortKey
 from arelle.ModelFormulaObject import (ModelValueAssertion, ModelExistenceAssertion, ModelConsistencyAssertion,
                                        ModelAssertionSet,
                                        ModelFactVariable, ModelGeneralVariable, ModelFormula, ModelParameter,
+                                       ModelPrecondition,
                                        ModelFilter, ModelConceptName, ModelConceptPeriodType, ModelConceptBalance,
                                        ModelConceptCustomAttribute, ModelConceptDataType, ModelConceptSubstitutionGroup,
                                        ModelTestFilter, ModelGeneral, ModelGeneralMeasures, ModelInstantDuration,
@@ -181,6 +182,8 @@ class GenerateXbrlFormula:
             if fObj.bindAsSequence:
                 self.xf = "{}bind-as-sequence".format(cIndent)
             self.xf = "{}select {{{}}}".format(cIndent, fObj.select)
+        elif isinstance(fObj, ModelPrecondition) and fromRel is not None:
+            self.xf = "{}precondition {{{}}};".format(pIndent, fObj.viewExpression)
         elif isinstance(fObj, ModelParameter):
             if fromRel is not None:
                 # parameter is referenced by a different QName on arc
