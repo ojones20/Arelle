@@ -26,6 +26,7 @@ from arelle.ModelFormulaObject import (ModelValueAssertion, ModelExistenceAssert
                                        ModelEntitySpecificIdentifier, ModelEntityScheme, ModelEntityRegexpScheme,
                                        ModelEntityRegexpIdentifier, ModelMatchFilter, ModelRelativeFilter,
                                        ModelAncestorFilter, ModelParentFilter, ModelSiblingFilter, ModelNilFilter,
+                                       ModelPrecisionFilter,
                                        ModelAspectCover, ModelConceptRelation,
                                        ModelCustomFunctionSignature, ModelCustomFunctionImplementation,
                                        ModelPeriod,
@@ -308,6 +309,8 @@ class GenerateXbrlFormula:
                 self.xf = "{}sibling ${};".format(pIndent, fObj.variable)
             elif isinstance(fObj, ModelNilFilter):
                 self.xf = "{}nilled;".format(pIndent)
+            elif isinstance(fObj, ModelPrecisionFilter):
+                self.xf = "{}(: minimum-precision {}; Note: \"precision\" filter is not supported in XF (WGN-2018-10-10) :)".format(pIndent, fObj.minimum)                
             elif isinstance(fObj, ModelAspectCover):
                 aspects = []
                 for aspectElt in XmlUtil.children(fObj, XbrlConst.acf, "aspect"):
