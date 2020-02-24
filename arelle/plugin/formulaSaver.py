@@ -42,7 +42,13 @@ def kebabCase(name):
 
 def strQuote(s):
     return '"' + s.replace('"', '""') + '"'
-        
+
+def ifrsFormulaObjIdSortKey(obj):
+    try:
+        return obj.id+'\0'+formulaObjSortKey(obj)
+    except AttributeError:
+        return None 
+
 class GenerateXbrlFormula:
     def __init__(self, modelXbrl, xfFile):
         self.modelXbrl = modelXbrl
@@ -64,7 +70,7 @@ class GenerateXbrlFormula:
         for qn, param in sorted(self.modelXbrl.qnameParameters.items(), key=lambda i:i[0]):
             self.doObject(param, None, "", set())
             
-        for rootObject in sorted(rootObjects, key=formulaObjSortKey):
+        for rootObject in sorted(rootObjects, key=ifrsFormulaObjIdSortKey):
             self.doObject(rootObject, None, "", set())
             
         if self.xmlns:
